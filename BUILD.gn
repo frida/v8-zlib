@@ -88,6 +88,8 @@ if (use_arm_neon_optimizations) {
         defines += [ "ARMV8_OS_FUCHSIA" ]
       } else if (is_win) {
         defines += [ "ARMV8_OS_WINDOWS" ]
+      } else if (is_mac) {
+        defines += [ "ARMV8_OS_MACOS" ]
       } else {
         assert(false, "Unsupported ARM OS")
       }
