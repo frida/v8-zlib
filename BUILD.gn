@@ -79,6 +79,8 @@ if (use_arm_neon_optimizations) {
     #  "All implementations of the ARMv8.1 architecture are required to
     #   implement the CRC32* instructions. These are optional in ARMv8.0."
     if (!is_ios) {
+      defines = []
+
       # Properly detecting if the CRC32 extension is present either requires
       # to know the exact ARM version or the possibility to test if the
       # compiler knows about those instructions.
