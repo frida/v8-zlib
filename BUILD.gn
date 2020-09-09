@@ -83,9 +83,9 @@ if (use_arm_neon_optimizations) {
       # to know the exact ARM version or the possibility to test if the
       # compiler knows about those instructions.
       #
-      # For gcc this mostly will depend on the march configured and thus
-      # indirectly what arm target is desired (generic arm64 can not support
-      # this option(hence disabling it by default) in gcc land
+      # For GCC this mostly will depend on the `-march` configured and thus
+      # indirectly what ARM target is desired in GCC land. The generic ARM64
+      # target can not support this option, hence we disable it by default.
       #
       # https://gcc.gnu.org/onlinedocs/gcc-8.1.0/gcc/AArch64-Options.html
       # https://en.wikipedia.org/wiki/Comparison_of_ARMv8-A_cores will list some cores and their arm revision
