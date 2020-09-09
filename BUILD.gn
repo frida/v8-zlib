@@ -79,7 +79,22 @@ if (use_arm_neon_optimizations) {
     #  "All implementations of the ARMv8.1 architecture are required to
     #   implement the CRC32* instructions. These are optional in ARMv8.0."
     if (!is_ios) {
-      defines = [ "CRC32_ARMV8_CRC32" ]
+      defines = []
+
+      # Properly detecting if the CRC32 extension is present either requires
+      # to know the exact ARM version or the possibility to test if the
+      # compiler knows about those instructions.
+      #
+      # For GCC this mostly will depend on the `-march` configured and thus
+      # indirectly what ARM target is desired in GCC land. The generic ARM64
+      # target can not support this option, hence we disable it by default.
+      #
+      # https://gcc.gnu.org/onlinedocs/gcc-8.1.0/gcc/AArch64-Options.html
+      # https://en.wikipedia.org/wiki/Comparison_of_ARMv8-A_cores will list some cores and their arm revision
+      if (is_clang) {
+        defines += [ "CRC32_ARMV8_CRC32" ]
+      }
+
       if (is_android) {
         defines += [ "ARMV8_OS_ANDROID" ]
       } else if (is_linux || is_chromeos) {
