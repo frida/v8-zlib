@@ -92,7 +92,6 @@ if (use_arm_neon_optimizations) {
       # https://gcc.gnu.org/onlinedocs/gcc-8.1.0/gcc/AArch64-Options.html
       # https://en.wikipedia.org/wiki/Comparison_of_ARMv8-A_cores will list some cores and their arm revision
 
-      defines = [ ]
       if (is_clang) {
         defines += [ "CRC32_ARMV8_CRC32" ]
       }
