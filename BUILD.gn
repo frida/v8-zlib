@@ -123,6 +123,8 @@ if (use_arm_neon_optimizations) {
 
       if (is_android) {
         defines += [ "ARMV8_OS_ANDROID" ]
+      } else if (current_os == "freebsd") {
+        defines += [ "ARMV8_OS_FREEBSD" ]
       } else if (is_linux || is_chromeos) {
         defines += [ "ARMV8_OS_LINUX" ]
       } else if (is_mac) {
