@@ -42,6 +42,18 @@ int ZLIB_INTERNAL x86_cpu_enable_simd = 0;
 #elif defined(ARMV8_OS_LINUX)
 #include <asm/hwcap.h>
 #include <sys/auxv.h>
+#ifndef HWCAP_PMULL
+#define HWCAP_PMULL (1 << 4)
+#endif
+#ifndef HWCAP_CRC32
+#define HWCAP_CRC32 (1 << 7)
+#endif
+#ifndef HWCAP2_PMULL
+#define HWCAP2_PMULL (1 << 1)
+#endif
+#ifndef HWCAP2_CRC32
+#define HWCAP2_CRC32 (1 << 4)
+#endif
 #elif defined(ARMV8_OS_FUCHSIA)
 #include <zircon/features.h>
 #include <zircon/syscalls.h>
