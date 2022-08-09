@@ -31,29 +31,15 @@ int ZLIB_INTERNAL x86_cpu_enable_simd = 0;
 
 #ifndef CPU_NO_SIMD
 
-#if defined(ARMV8_OS_ANDROID) || defined(ARMV8_OS_FREEBSD) || defined(ARMV8_OS_LINUX) || defined(ARMV8_OS_FUCHSIA)
+#if defined(ARMV8_OS_ANDROID) || defined(ARMV8_OS_LINUX) || defined(ARMV8_OS_FUCHSIA)
 #include <pthread.h>
 #endif
 
 #if defined(ARMV8_OS_ANDROID)
 #include <cpu-features.h>
-#elif defined(ARMV8_OS_FREEBSD)
-#include <sys/auxv.h>
 #elif defined(ARMV8_OS_LINUX)
 #include <asm/hwcap.h>
 #include <sys/auxv.h>
-#ifndef HWCAP_PMULL
-#define HWCAP_PMULL (1 << 4)
-#endif
-#ifndef HWCAP_CRC32
-#define HWCAP_CRC32 (1 << 7)
-#endif
-#ifndef HWCAP2_PMULL
-#define HWCAP2_PMULL (1 << 1)
-#endif
-#ifndef HWCAP2_CRC32
-#define HWCAP2_CRC32 (1 << 4)
-#endif
 #elif defined(ARMV8_OS_FUCHSIA)
 #include <zircon/features.h>
 #include <zircon/syscalls.h>
@@ -70,7 +56,7 @@ int ZLIB_INTERNAL x86_cpu_enable_simd = 0;
 static void _cpu_check_features(void);
 #endif
 
-#if defined(ARMV8_OS_ANDROID) || defined(ARMV8_OS_FREEBSD) || defined(ARMV8_OS_LINUX) || defined(ARMV8_OS_MACOS) || defined(ARMV8_OS_FUCHSIA) || defined(X86_NOT_WINDOWS)
+#if defined(ARMV8_OS_ANDROID) || defined(ARMV8_OS_LINUX) || defined(ARMV8_OS_MACOS) || defined(ARMV8_OS_FUCHSIA) || defined(X86_NOT_WINDOWS)
 #if !defined(ARMV8_OS_MACOS)
 // _cpu_check_features() doesn't need to do anything on mac/arm since all
 // features are known at build time, so don't call it.
@@ -118,11 +104,6 @@ static void _cpu_check_features(void)
     uint64_t features = android_getCpuFeatures();
     arm_cpu_enable_crc32 = !!(features & ANDROID_CPU_ARM_FEATURE_CRC32);
     arm_cpu_enable_pmull = !!(features & ANDROID_CPU_ARM_FEATURE_PMULL);
-#elif defined(ARMV8_OS_FREEBSD) && defined(__aarch64__)
-    u_long features = 0;
-    elf_aux_info(AT_HWCAP, &features, sizeof(features));
-    arm_cpu_enable_crc32 = !!(features & HWCAP_CRC32);
-    arm_cpu_enable_pmull = !!(features & HWCAP_PMULL);
 #elif defined(ARMV8_OS_LINUX) && defined(__aarch64__)
     unsigned long features = getauxval(AT_HWCAP);
     arm_cpu_enable_crc32 = !!(features & HWCAP_CRC32);
