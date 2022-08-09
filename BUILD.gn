@@ -285,10 +285,12 @@ source_set("zlib_slide_hash_simd") {
 config("zlib_warnings") {
   if (is_clang) {
     cflags = [
-      "-Wno-deprecated-non-prototype",
       "-Wno-incompatible-pointer-types",
       "-Wunused-variable",
     ]
+  }
+  if (is_clang && !(is_apple && use_xcode_clang)) {
+    cflags = [ "-Wno-deprecated-non-prototype" ]
   }
 }
 
